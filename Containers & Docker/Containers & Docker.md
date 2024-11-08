@@ -38,3 +38,31 @@
     
     - API: Interacting with docker server
     - CLI: CLI client to execute docker commands
+
+## Docker Network
+- Containers inside a host can communicate with each with just names as they reside in the same docker network. Like mongoDb communicating mongoDb-express-ui. A backend app running on node outside the container can connect to the containers via host ip and port
+
+## Docker Compose File
+
+```yaml
+version: '1'
+services:
+    mongodb:                 #container_name
+        image: mongo         #image_name
+        ports:
+            - 27017:27017    #portbinding host:container
+        enviroment:
+            - MONGO_INITDB_ROOT_USERNAME=shahid
+            - MONGO_INITDB_ROOT_PASSWORD=123456
+    
+    mongo-express:                 #container_name
+        image: mongo-express       #image_name
+        ports:
+            - 8080:8080            #portbinding host:container
+        enviroment:
+            - ME_CONFIG_MONGODB_ADMINUSERNAME=shahid
+            - ME_CONFIG_MONGODB_ADMINPASSWORD=123456
+            - ME_CONFIG_MONGODB_SERVER=mongodb
+```
+
+- As you can see we haven't created a network in docker compose file. Docker compose takes care of creating a common network for the containers for them to communicate with each other
