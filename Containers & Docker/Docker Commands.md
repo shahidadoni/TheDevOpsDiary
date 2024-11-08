@@ -62,6 +62,7 @@
 
 15. docker login
     - for authenticating into private repository such as aws ecr
+    - all authentication config can be found in your home directory path i.e. ~/.docker/config.json
 
 16. docker tag <image_name:version> <new_image_name:version>
     - For renaming docker image present locally
@@ -71,6 +72,13 @@
     - Pushing docker images to repositories like dockerhub, aws ecr, etc.
     - Ex: docker push 1234567890.dkr.ecr.ap-south-1.amazon.com/shahid-app:latest
     - In the backend this command pushes the image layer by layer as in case of pulling
+
+18. docker volume create --name <volume_name>
+    - Creates a new named docker volume for persisting data
+
+19. docker volume ls 
+    - lists/shows all docker volume present in the local
+    - you can also use `docker inspect <volume_name>` to get properties of volume including creation date, host mountpoint/volume location and driver.
 
 
 
