@@ -13,6 +13,7 @@
     - name flag: to give name for the container if left blank random name will be allotted by docker
     - network/net flag: specify a docket network where you want to run the docker network
     - e flag: for specifying environment variable. Example: -e MONGO_INITDB_ROOT_USERNAME=shahid \ -e MONGO_INITDB_ROOT_PASSWORD=123456. This is are availble in the documentation of the particular image in dockerhub
+    - v flag: TO give location for persistent volume. Ex: docker run -v host_directory:container_directory or docker run -v container_directory or docker run -v name:container_directory
 
 3. docker images 
     - shows/lists all the images present in your local
@@ -30,7 +31,7 @@
 
 7. docker exec -it <container_id>or<container_name> /bin/bash
     - it stands for interactive terminal
-    - /bin/bash is used to start a bash session in terminal you can put other shell session that is supported by the image
+    - /bin/bash is used to start a bash session in terminal you can put other shell session that is supported by the image like /bin/sh.
     - this command is used to navigate the file system virtually using the terminal for debugging or checking file configuration or printing out environment variables
     - use exit command to quit from interactive terminal
     
@@ -46,5 +47,30 @@
 11. docker compose -f <file_name> down
     - Stops and removes every container mentioned in the docker-compose file with all the mentioned configurations
     - Also removes the default network created by the docker compose command/file
+
+12. docker build -t <image_name:version> <Dockerfile_path>
+    - The t flag is the tag you want to give to your image which basically image name and version.
+    - Dockerfile path is the directory where your dockerfile resides
+    - Example: `docker build -t shahid-app:1.0 .`
+
+13. docker rm <container_id>
+    - Deletes the container in your local
+
+14. docker rmi <image_id>
+    - Deletes the docker image in your local
+    - First you need to check if this image is used by any container that is stopped or running then delete the respective containers.
+
+15. docker login
+    - for authenticating into private repository such as aws ecr
+
+16. docker tag <image_name:version> <new_image_name:version>
+    - For renaming docker image present locally
+    - Ex: docker tag shahid-app:1.0 1234567890.dkr.ecr.ap-south-1.amazon.com/shahid-app:latest
+
+17. docker push <image_name:version>
+    - Pushing docker images to repositories like dockerhub, aws ecr, etc.
+    - Ex: docker push 1234567890.dkr.ecr.ap-south-1.amazon.com/shahid-app:latest
+    - In the backend this command pushes the image layer by layer as in case of pulling
+
 
 
