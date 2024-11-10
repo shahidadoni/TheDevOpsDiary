@@ -1,0 +1,1 @@
+- `cat /etc/issue`: To see what distribution of linux you are using. Mostly required to know what type of container distribution you are running.

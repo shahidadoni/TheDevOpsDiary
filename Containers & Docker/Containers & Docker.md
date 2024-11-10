@@ -108,5 +108,27 @@ Cannot be overridden by user input.
 - The recommended method it to use named volumes in production.
 - When using anonymous or named volumes, you can find docker volumes locations at C:\ProgramData\docker\volumes for windows and /var/lib/docker/volumes for linux and mac os.
 
+## Making Docker available inside container by copying it from host
+ ```shell
+ docker run -p 8080:8080 -p 50000:50000 -d \
+ > -v jenkins_home:/var/jenkins_home \
+ > -v /var/run/docker.sock:/var/run/docker.sock \ #for docker
+ > -v $(which docker):/usr/bin/docker jenkins/jenkins:lts #for docker
+ ```
+- Followed by this there would be error of permission. In our case the error would be related to no permissions to service user (jenkins user). You need to enter as root user inside container and run below commands
+    1. `docker exec -u 0 -it <container_id> bash`
+    2. `chmod 666 /var/run/docker.sock`
+- You can exit and then enter into the container as normal user without using u flag
+
+## Creating Insecure Registries Docker Configuration on Host
+```json
+{
+    "insecure-registries":["167.99.248.163:8083"]
+}
+
+```
+- save this in `vim /etc/docker/daemon.json` and `run systemctl restart docker`
+- when you restart docker all the container are killed/stopped and also you need to set the same permission for docker.sock file inside container `chmod 666 /var/run/docker.sock` by entering as root user `docker exec -u 0 -it <container_id> bash`
+
 
 

@@ -9,10 +9,10 @@
     - docker pull downloads only layer of images which don't exist in your local
     - if version is not provided it download the latest version which is basically image_name:latest
     - d flag: run the container is detached mode and returns the containerId. Detached mode is basically running the container like a service in background and you can have access to the same shell session for running commands
-    - p<host_port:container_port> flag: for binding your container port with the host port. Helps in case you have 2 different version of same application container running on same host with same ports. Like 2 redis container with different version. You can bind the it to 2 different host_ports like 5000 and 5001.
+    - p<host_port:container_port> flag: for binding your container port with the host port. Helps in case you have 2 different version of same application container running on same host with same ports. Like 2 redis container with different version. You can bind the it to 2 different host_ports like 5000 and 5001. You can multiple p flags
     - name flag: to give name for the container if left blank random name will be allotted by docker
     - network/net flag: specify a docket network where you want to run the docker network
-    - e flag: for specifying environment variable. Example: -e MONGO_INITDB_ROOT_USERNAME=shahid \ -e MONGO_INITDB_ROOT_PASSWORD=123456. This is are availble in the documentation of the particular image in dockerhub
+    - e flag: for specifying environment variable. Example: -e MONGO_INITDB_ROOT_USERNAME=shahid \ -e MONGO_INITDB_ROOT_PASSWORD=123456. This is are availble in the documentation of the particular image in dockerhub.You can multiple e flags
     - v flag: TO give location for persistent volume. Ex: docker run -v host_directory:container_directory or docker run -v container_directory or docker run -v name:container_directory
 
 3. docker images 
@@ -34,6 +34,7 @@
     - /bin/bash is used to start a bash session in terminal you can put other shell session that is supported by the image like /bin/sh.
     - this command is used to navigate the file system virtually using the terminal for debugging or checking file configuration or printing out environment variables
     - use exit command to quit from interactive terminal
+    - u flag: by default this commands ssh/enters into container as service user. To enter as a root user you need to `-u 0` flag.
     
 8. docker network ls
     - lists all network present locally
@@ -60,9 +61,11 @@
     - Deletes the docker image in your local
     - First you need to check if this image is used by any container that is stopped or running then delete the respective containers.
 
-15. docker login
+15. docker login <repository_host_name>
+    - you need to provide repository host name in case you have private repository not on docker hub.
     - for authenticating into private repository such as aws ecr
     - all authentication config can be found in your home directory path i.e. ~/.docker/config.json
+    - you can also provide direct one line command so you dont have to put the creadentials in interactive terminal `docker login -u $USERNAME -p $PASSWORD` or `echo $PASSWORD | docker login -u $USERNAME --password-stdin`
 
 16. docker tag <image_name:version> <new_image_name:version>
     - For renaming docker image present locally
