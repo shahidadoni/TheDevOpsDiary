@@ -14,3 +14,87 @@ notification to teams about the build process and also has an UI interface for v
     2. Jenkins User: Creating actual jobs to run workflows. Development or Devops team.
 - To need to install and configure different tools on jenkins to run test and build application package, for example, A Nodejs app would require npm to be available on jenkins or in case of Java app would require Maven to be available and installed on jenkins.
 - You can install them from jenkin plugin UI or directly ssh to container where jenkins is running and install the tools.
+- In Jenkins for pipeline jobs, you can write script in **Groovy** language and no need to configure it like any other freestyle job.
+
+
+## JenkinsFile
+```Groovy
+pipeline {
+    agent any  // Runs the pipeline on any available agent
+
+    environment {
+        // Define environment variables
+        PROJECT_NAME = 'my-project'
+        BUILD_DIR = 'build'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the source code from Git repository
+                git 'https://github.com/user/my-project.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                // Run the build command, e.g., for a Maven project
+                script {
+                    // Make sure you're in the correct directory before building
+                    dir(BUILD_DIR) {
+                        sh 'mvn clean install'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                // Run tests
+                script {
+                    // For example, using Maven to run tests
+                    dir(BUILD_DIR) {
+                        sh 'mvn test'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Deploy the application if tests pass
+                script {
+                    echo 'Deploying to the staging server...'
+                    // Add actual deployment command here (e.g., SCP, SSH, etc.)
+                    sh './deploy.sh'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+        always {
+            // Clean up if needed
+            echo 'Cleaning up...'
+        }
+    }
+}
+```
+- pipeline: This is the root block of a declarative pipeline.
+- agent any: Defines where the pipeline will run, in this case, any available agent.
+- environment: You can define environment variables that will be available throughout the pipeline.
+- stages: The pipeline is divided into multiple stages:
+    - Checkout: Fetches the source code from a Git repository.
+    - Build: Runs a build (Maven in this case).
+    - Test: Runs tests using Maven.
+    - Deploy: Deploys the application (a placeholder script here).
+- post: This section defines actions that are executed after the pipeline runs:
+    - success: Executed if the pipeline succeeds.
+    - failure: Executed if the pipeline fails.
+    - always: Executed regardless of success or failure (useful for cleanup tasks).
